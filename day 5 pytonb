@@ -1,0 +1,297 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMJeVJgEU478xw1TcQ8tv36",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/chennojwalavishnu/Fundamentals-of-Python/blob/main/day%205%20pytonb\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 13,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "JIxUXsTXwGSi",
+        "outputId": "ef98323e-45d8-4e6f-cf88-a7d06345f119"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "hello world\n",
+            "10\n"
+          ]
+        }
+      ],
+      "source": [
+        "print(\"hello world\")\n",
+        "a=1\n",
+        "b=9\n",
+        "print(a+b)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(\"hello world\")\n",
+        "print(5)\n",
+        "print(\"bye\")\n",
+        "print(17+13)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "DxX2xiI4w6X8",
+        "outputId": "af969ee4-38f8-44c3-ac48-917b1a667d28"
+      },
+      "execution_count": 30,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "hello world\n",
+            "5\n",
+            "bye\n",
+            "30\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Hey vishnu, dont remove this line\n",
+        "#author: vishnu\n",
+        "#course: 100 daysofcoded this viewer is also a boy/girl\")\n",
+        "\n",
+        "print(\"hello world\")\n",
+        "print(\"this is a print statement\")\n",
+        "print(\"hello world !!!\") #print hello world"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "DAhcsT5m292d",
+        "outputId": "518ff0ad-3211-4cae-c661-636a91703655"
+      },
+      "execution_count": 74,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "hey i am a good boyand this viewer is also a boy/girl\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "78d4818f"
+      },
+      "source": [
+        "### Snake Game using Pygame\n",
+        "\n",
+        "This code creates a basic Snake game. You'll need to have `pygame` installed. If you don't, you can install it using `!pip install pygame` in a separate cell.\n",
+        "\n",
+        "**How to play:**\n",
+        "*   Use the arrow keys to control the snake's direction.\n",
+        "*   Eat the red food to grow.\n",
+        "*   Avoid hitting the walls or yourself."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 332
+        },
+        "id": "08da9594",
+        "outputId": "16fbd00c-72c3-4ff2-aeeb-2eae2570f666"
+      },
+      "source": [
+        "import pygame\n",
+        "import random\n",
+        "\n",
+        "# Initialize Pygame\n",
+        "pygame.init()\n",
+        "\n",
+        "# Screen dimensions\n",
+        "WIDTH, HEIGHT = 600, 400\n",
+        "SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))\n",
+        "pygame.display.set_caption(\"Snake Game\")\n",
+        "\n",
+        "# Colors\n",
+        "WHITE = (255, 255, 255)\n",
+        "GREEN = (0, 255, 0)\n",
+        "RED = (255, 0, 0)\n",
+        "BLACK = (0, 0, 0)\n",
+        "\n",
+        "# Snake properties\n",
+        "SNAKE_SIZE = 10\n",
+        "SNAKE_SPEED = 15\n",
+        "\n",
+        "# Font for score\n",
+        "font = pygame.font.Font(None, 25)\n",
+        "\n",
+        "def draw_snake(snake_list):\n",
+        "    for x, y in snake_list:\n",
+        "        pygame.draw.rect(SCREEN, GREEN, [x, y, SNAKE_SIZE, SNAKE_SIZE])\n",
+        "\n",
+        "def generate_food(snake_list):\n",
+        "    while True:\n",
+        "        food_x = round(random.randrange(0, WIDTH - SNAKE_SIZE) / 10.0) * 10.0\n",
+        "        food_y = round(random.randrange(0, HEIGHT - SNAKE_SIZE) / 10.0) * 10.0\n",
+        "        if [food_x, food_y] not in snake_list:  # Ensure food doesn't spawn on snake\n",
+        "            return food_x, food_y\n",
+        "\n",
+        "def message(msg, color):\n",
+        "    mesg = font.render(msg, True, color)\n",
+        "    SCREEN.blit(mesg, [WIDTH / 6, HEIGHT / 3])\n",
+        "\n",
+        "def game_loop():\n",
+        "    game_over = False\n",
+        "    game_close = False\n",
+        "\n",
+        "    # Snake initial position and direction\n",
+        "    x1 = WIDTH / 2\n",
+        "    y1 = HEIGHT / 2\n",
+        "\n",
+        "    x1_change = 0\n",
+        "    y1_change = 0\n",
+        "\n",
+        "    snake_list = []\n",
+        "    length_of_snake = 1\n",
+        "\n",
+        "    food_x, food_y = generate_food(snake_list)\n",
+        "\n",
+        "    clock = pygame.time.Clock()\n",
+        "\n",
+        "    while not game_over:\n",
+        "\n",
+        "        while game_close:\n",
+        "            SCREEN.fill(BLACK)\n",
+        "            message(\"You Lost! Press Q-Quit or C-Play Again\", RED)\n",
+        "            pygame.display.update()\n",
+        "\n",
+        "            for event in pygame.event.get():\n",
+        "                if event.type == pygame.KEYDOWN:\n",
+        "                    if event.key == pygame.K_q:\n",
+        "                        game_over = True\n",
+        "                        game_close = False\n",
+        "                    if event.key == pygame.K_c:\n",
+        "                        game_loop()\n",
+        "\n",
+        "        for event in pygame.event.get():\n",
+        "            if event.type == pygame.QUIT:\n",
+        "                game_over = True\n",
+        "            if event.type == pygame.KEYDOWN:\n",
+        "                if event.key == pygame.K_LEFT:\n",
+        "                    x1_change = -SNAKE_SIZE\n",
+        "                    y1_change = 0\n",
+        "                elif event.key == pygame.K_RIGHT:\n",
+        "                    x1_change = SNAKE_SIZE\n",
+        "                    y1_change = 0\n",
+        "                elif event.key == pygame.K_UP:\n",
+        "                    y1_change = -SNAKE_SIZE\n",
+        "                    x1_change = 0\n",
+        "                elif event.key == pygame.K_DOWN:\n",
+        "                    y1_change = SNAKE_SIZE\n",
+        "                    x1_change = 0\n",
+        "\n",
+        "        # Check for boundaries\n",
+        "        if x1 >= WIDTH or x1 < 0 or y1 >= HEIGHT or y1 < 0:\n",
+        "            game_close = True\n",
+        "\n",
+        "        x1 += x1_change\n",
+        "        y1 += y1_change\n",
+        "        SCREEN.fill(BLACK)\n",
+        "        pygame.draw.rect(SCREEN, RED, [food_x, food_y, SNAKE_SIZE, SNAKE_SIZE])\n",
+        "\n",
+        "        snake_head = []\n",
+        "        snake_head.append(x1)\n",
+        "        snake_head.append(y1)\n",
+        "        snake_list.append(snake_head)\n",
+        "        if len(snake_list) > length_of_snake:\n",
+        "            del snake_list[0]\n",
+        "\n",
+        "        # Check for collision with self\n",
+        "        for x in snake_list[:-1]:\n",
+        "            if x == snake_head:\n",
+        "                game_close = True\n",
+        "\n",
+        "        draw_snake(snake_list)\n",
+        "\n",
+        "        # Display score\n",
+        "        score = length_of_snake - 1\n",
+        "        score_text = font.render(f\"Score: {score}\", True, WHITE)\n",
+        "        SCREEN.blit(score_text, [0, 0])\n",
+        "\n",
+        "        pygame.display.update()\n",
+        "\n",
+        "        # Check for food collision\n",
+        "        if x1 == food_x and y1 == food_y:\n",
+        "            food_x, food_y = generate_food(snake_list)\n",
+        "            length_of_snake += 1\n",
+        "\n",
+        "        clock.tick(SNAKE_SPEED)\n",
+        "\n",
+        "    pygame.quit()\n",
+        "    quit()\n",
+        "\n",
+        "game_loop()"
+      ],
+      "execution_count": 75,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "pygame 2.6.1 (SDL 2.28.4, Python 3.12.12)\n",
+            "Hello from the pygame community. https://www.pygame.org/contribute.html\n"
+          ]
+        },
+        {
+          "output_type": "error",
+          "ename": "KeyboardInterrupt",
+          "evalue": "",
+          "traceback": [
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+            "\u001b[0;31mKeyboardInterrupt\u001b[0m                         Traceback (most recent call last)",
+            "\u001b[0;32m/tmp/ipykernel_163/2202775757.py\u001b[0m in \u001b[0;36m<cell line: 0>\u001b[0;34m()\u001b[0m\n\u001b[1;32m    128\u001b[0m     \u001b[0mquit\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    129\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 130\u001b[0;31m \u001b[0mgame_loop\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+            "\u001b[0;32m/tmp/ipykernel_163/2202775757.py\u001b[0m in \u001b[0;36mgame_loop\u001b[0;34m()\u001b[0m\n\u001b[1;32m    123\u001b[0m             \u001b[0mlength_of_snake\u001b[0m \u001b[0;34m+=\u001b[0m \u001b[0;36m1\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    124\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 125\u001b[0;31m         \u001b[0mclock\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mtick\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mSNAKE_SPEED\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    126\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    127\u001b[0m     \u001b[0mpygame\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mquit\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;31mKeyboardInterrupt\u001b[0m: "
+          ]
+        }
+      ]
+    }
+  ]
+}
